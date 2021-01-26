@@ -1,5 +1,3 @@
-import re
-
 
 def login_format(html_path, msg=''):
     # 1 读取 2 替换 3 转码
