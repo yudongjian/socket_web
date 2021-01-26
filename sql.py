@@ -46,19 +46,3 @@ def operational_data(fun, sql):
                 db.close()
                 return flag
 
-sql1 = "select * from user"
-# data = operational_data("find", 'select * from log')
-# print(data)
- # 插入数据
-# a = '908'
-# b = '908'
-# sql2 = "insert into user values(%s, %s)" % (a,b)
-# result = operational_data("insert", sq)
-
-# 更新数据
-# newPassword = '999'
-# username = '908'
-# oldPassword = '908'
-# sql3 = "update user set password=%s where name=%s and password=%s"%(newPassword, username, oldPassword)
-# result = operational_data("update", sql3)
-# print(result)
