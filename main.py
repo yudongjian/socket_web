@@ -179,11 +179,14 @@ def server_clint(new_socket):
         if born_username and born_password:
             if sql.operational_data('find', 'select * from user where name = \'%s\''%born_username):
                 msg = '用户已经存在，请重新注册...'
+                new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
+                register_data = format_html.register_format('./html/register.html', msg)
+
             else:
                 sql.operational_data('insert', 'insert into user(name, password)  values (\'%s\', \'%s\')'%(born_username, born_password))
                 msg = '用户注册成功,请登录...'
-        new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-        register_data = format_html.login_format('./html/login.html', msg)
+                new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
+                register_data = format_html.login_format('./html/login.html', msg)
         new_socket.sendall(register_data)
         new_socket.close()
 
@@ -194,7 +197,7 @@ def server_clint(new_socket):
         login_data = format_html.login_format('./html/login.html', msg)
         new_socket.send(login_data)
         new_socket.close()
-        
+
     else:
         login(new_socket, '欢迎访问本网站')
 
