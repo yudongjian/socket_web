@@ -1,15 +1,17 @@
 import pymysql
 
+# 设计一个全局的配置文件
+# config = config.sql_config
+
 config = {
-        'user': 'root',
-        'password': 'mysql',
-        'host': '127.0.0.1',
-        'database': "shanghai",
-        }
+    'user': 'root',
+    'password': '123456',
+    'host': '180.3.15.63',
+    'database': "shanghai",
+}
 
 
 def operational_data(fun, sql):
-
         db = pymysql.connect(**config)
         cursor = db.cursor()
 
@@ -23,7 +25,7 @@ def operational_data(fun, sql):
                 db.close()
                 return data
 
-        if fun == 'insert':
+        elif fun == 'insert':
                 try:
                         cursor.execute(sql)
                         print('lll')
@@ -34,7 +36,7 @@ def operational_data(fun, sql):
                         flag = False
                 db.close()
                 return flag
-        if fun == 'update':
+        elif fun == 'update':
                 try:
                         cursor.execute(sql)
                         db.commit()
@@ -46,3 +48,22 @@ def operational_data(fun, sql):
                 db.close()
                 return flag
 
+
+
+#
+# def insert():
+#         print("插入数据")
+#
+# def select():
+#         print("查询数据")
+#
+# opt = {
+#         'insert': insert,
+#         'select': select,
+# }
+#
+# def opt_choice(func):
+#         opt.get(func)()
+#
+# if __name__ == '__main__':
+#     opt_choice('insert')
