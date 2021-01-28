@@ -2,16 +2,18 @@ import socket
 from urllib import parse
 import format_html
 import sql
+import config
 import traceback
 import json
 import time
+
 # 用户信息
 
 
 # 登录界面
 def login(new_socket, msg):
     new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-    login_data = format_html.login_format('./html/login.html', msg)
+    login_data = format_html.login_format(config.login_path, msg)
     new_socket.send(login_data)
     new_socket.close()
 
@@ -48,7 +50,7 @@ def server_clint(new_socket):
                 data = sql.operational_data("find", 'select date, consume from log where name = \'%s\''%username)
                 # 保存查询文件
                 format_html.down_load(data)
-                menu_data = format_html.menu_format('./html/menu.html', data, username)
+                menu_data = format_html.menu_format(config.menu_path, data, username)
                 new_socket.sendall(menu_data)
                 new_socket.close()
             else:
@@ -57,6 +59,35 @@ def server_clint(new_socket):
         else:
             msg = "用户名不存在！"
             login(new_socket, msg)
+
+    # 查询指定日期数据
+    elif "startTime" in url_userinfo and "stopTime" in url_userinfo:
+        print('查询指定日期的数据....')
+
+        # 获取用户名
+        pa = parse.parse_qs(url_userinfo.split('\r\n')[-3])
+        username = pa.get('Cookie: sessionid')[0]
+
+
+        # 获取日期
+        url_userinfo = url_userinfo.replace('GET /menu?', '').split('\r\n')[0].split(' ')[0]
+        print(url_userinfo)
+        params = parse.parse_qs(url_userinfo)
+        startTime = params.get('startTime')[0]
+        stopTime = params.get('stopTime')[0]
+
+        new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
+        find_date_sql = 'select date, consume from log where name = \'%s\' and date between \'%s\' and \'%s\'' % (
+            username, startTime, stopTime)
+        data = sql.operational_data("find", find_date_sql)
+
+        # 保存查询文件
+        format_html.down_load(data)
+
+        menu_data = format_html.menu_format('./html/menu.html', data, username)
+        new_socket.sendall(menu_data)
+        new_socket.close()
+
     # 直接访问主菜单
     elif url_userinfo.startswith('GET /menu'):
         print(' 直接访问主菜单')
@@ -70,11 +101,12 @@ def server_clint(new_socket):
             # 保存查询文件
             format_html.down_load(data)
             new_socket.send(bytes('HTTP/1.1 201 OK\r\n\r\n', 'utf-8'))
-            menu_data = format_html.menu_format('./html/menu.html', data, username)
+            menu_data = format_html.menu_format(config.menu_path, data, username)
             new_socket.sendall(menu_data)
             new_socket.close()
         else:
             login(new_socket, '欢迎访问本网站')
+            # 查询指定日期数据
 
     # 进入设置界面
     elif url_userinfo.startswith('GET /set'):
@@ -85,7 +117,7 @@ def server_clint(new_socket):
             username = params.get('Cookie: sessionid')[0]
             print('个人设置-------')
             print('username', username)
-            set_data = format_html.set_format('./html/set.html', msg, username)
+            set_data = format_html.set_format(config.set_path, msg, username)
             new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
             new_socket.send(set_data)
             new_socket.close()
@@ -118,50 +150,27 @@ def server_clint(new_socket):
 
         print('---正在进入个人设置----')
         new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-        set_data = format_html.set_format('./html/set.html', msg, username)
+        set_data = format_html.set_format(config.set_path, msg, username)
         new_socket.sendall(set_data)
         new_socket.close()
 
     #  进入下载模块
     elif url_userinfo.startswith('GET /down'):
         print('正在下载....')
-        with open('./down/download.txt', "rb") as f:
+        with open(config.down_path, "rb") as f:
             file_content = f.read()
             new_socket.send(b"HTTP/1.1 200 OK\r\n")
             new_socket.send(b"Content-Disposition: attachment\r\n\r\n")
             new_socket.sendall(file_content)
             new_socket.close()
 
-    # 查询指定日期数据
-    elif "startTime" in url_userinfo and "stopTime" in url_userinfo:
-        print('查询指定日期的数据....')
-        # 获取用户名
-        params = parse.parse_qs(url_userinfo)
-        username = params.get(' sessionid')[0].strip()
-        # 获取日期
-        url_userinfo = url_userinfo.replace('GET /menu?', '').split('\r\n')[0].split(' ')[0]
-        print(url_userinfo)
-        params = parse.parse_qs(url_userinfo)
-        startTime = params.get('startTime')[0]
-        stopTime = params.get('stopTime')[0]
 
-        new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-        find_date_sql = 'select date, consume from log where name = \'%s\' and date between \'%s\' and \'%s\''%(username, startTime, stopTime)
-        data = sql.operational_data("find", find_date_sql)
-
-        # 保存查询文件
-        format_html.down_load(data)
-
-        menu_data = format_html.menu_format('./html/menu.html', data, username)
-        new_socket.sendall(menu_data)
-        new_socket.close()
-
-    #    注册模块  
+    #
     elif url_userinfo.startswith('GET /register'):
         print('正在注册')
         msg = '正在注册用户...'
         new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-        register_data = format_html.register_format('./html/register.html', msg)
+        register_data = format_html.register_format(config.register_path, msg)
         new_socket.sendall(register_data)
         new_socket.close()
 
@@ -179,13 +188,13 @@ def server_clint(new_socket):
             if sql.operational_data('find', 'select * from user where name = \'%s\''%born_username):
                 msg = '用户已经存在，请重新注册...'
                 new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-                register_data = format_html.register_format('./html/register.html', msg)
+                register_data = format_html.register_format(config.register_path, msg)
 
             else:
                 sql.operational_data('insert', 'insert into user(name, password)  values (\'%s\', \'%s\')'%(born_username, born_password))
                 msg = '用户注册成功,请登录...'
                 new_socket.send(bytes("HTTP/1.1 201 OK\r\n\r\n", "utf-8"))
-                register_data = format_html.login_format('./html/login.html', msg)
+                register_data = format_html.login_format(config.login_path, msg)
         new_socket.sendall(register_data)
         new_socket.close()
 
@@ -193,7 +202,7 @@ def server_clint(new_socket):
     elif url_userinfo.startswith('GET /logout'):
         new_socket.send(bytes("HTTP/1.1 201 OK\r\n", "utf-8"))
         new_socket.send(bytes('Set-Cookie: sessionid={}\r\n\r\n'.format('******'), 'utf-8'))
-        login_data = format_html.login_format('./html/login.html', msg)
+        login_data = format_html.login_format(config.login_path, msg)
         new_socket.send(login_data)
         new_socket.close()
 
@@ -202,12 +211,11 @@ def server_clint(new_socket):
 
 
 def main():
-    HOST = '180.3.15.63'
-    PORT = 8080
+
     # 1:网络协议 tcp络模型  2:释放端口   3:绑定信息 4:最大待连接数
     tcp_server_con = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     tcp_server_con.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    tcp_server_con.bind((HOST, PORT))
+    tcp_server_con.bind((config.host, config.port))
     tcp_server_con.listen(5)
 
     while True:
