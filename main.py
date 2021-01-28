@@ -45,7 +45,6 @@ def server_clint(new_socket):
                 print('账号密码正确, 正在登录.....')
                 new_socket.send(bytes("HTTP/1.1 201 OK\r\n", "utf-8"))
                 new_socket.send(bytes('Set-Cookie: sessionid={}\r\n\r\n'.format(username), 'utf-8'))
-                # todo cookie
                 data = sql.operational_data("find", 'select date, consume from log where name = \'%s\''%username)
                 # 保存查询文件
                 format_html.down_load(data)
