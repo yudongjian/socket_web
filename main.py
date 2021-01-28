@@ -157,7 +157,7 @@ def server_clint(new_socket):
         new_socket.sendall(menu_data)
         new_socket.close()
 
-    #   todo 注册模块  get表单
+    #    注册模块  
     elif url_userinfo.startswith('GET /register'):
         print('正在注册')
         msg = '正在注册用户...'
