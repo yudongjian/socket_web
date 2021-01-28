@@ -7,18 +7,19 @@
 </head>
 <body>
 
-<p align="center">用户: {{username}}</p>
+<p align="center">用户: {username}</p>
 <h2>修改密码</h2>
 
-<form action="http://127.0.0.1:8080" method="get">
+<form action="/set" method="post">
 <br><br>
- 用户名 ： <input type="text" name="username"><br>
-旧密码 ： <input type="password" name="old_password"><br>
-新密码 ： <input type="password" name="new_password"><br>
+  <input type="hidden" name="username" value="{username}"><br>
+旧密码       ： <input type="password" name="old_password"><br>
+新密码       ： <input type="password" name="first_new_password"><br>
+重新输入新密码 ： <input type="password" name="second_new_password"><br>
 <input type="submit" value="提交"><br><br>
 
-{{ msg }}
-    <a href="/menu">主页</a><br><br>
+{message}
+    <a href="/menu">返回主页</a><br><br>
      <a href="/login">返回登录</a><br><br>
 </body>
 </html>
