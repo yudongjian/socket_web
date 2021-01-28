@@ -2,23 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登陆页面bai</title>
+    <title>登陆页面</title>
 </head>
 <body style="text-align:center;">
 
 <br><br>
-<form action="http://127.0.0.1:8080" method="get">
+<form action="/menu" method="post">
 用户登陆<br><br>
 用户名：<input type="text" name="username"><br><br>
 密码 ： <input type="password" name="password"><br><br>
 
-<input type="submit" value="提交"><br><br>
-<input type="reset" value="重置"><br><br>
+<input type="submit" value="登录"><br><br>
+<!--<input type="reset" value="重置"><br><br>-->
     <a href="/register">注册</a><br><br>
-{{ msg }}
-{{username}}
+{message}
 </form>
 
 </body>
 </html>
->
