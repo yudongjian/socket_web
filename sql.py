@@ -1,15 +1,8 @@
 import pymysql
+import config
 
-# 设计一个全局的配置文件
-# config = config.sql_config
 
-config = {
-    'user': 'root',
-    'password': '123456',
-    'host': '180.3.15.63',
-    'database': "shanghai",
-}
-
+config = config.sql_config
 
 def operational_data(fun, sql):
         db = pymysql.connect(**config)
@@ -48,22 +41,3 @@ def operational_data(fun, sql):
                 db.close()
                 return flag
 
-
-
-#
-# def insert():
-#         print("插入数据")
-#
-# def select():
-#         print("查询数据")
-#
-# opt = {
-#         'insert': insert,
-#         'select': select,
-# }
-#
-# def opt_choice(func):
-#         opt.get(func)()
-#
-# if __name__ == '__main__':
-#     opt_choice('insert')
