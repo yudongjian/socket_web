@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增数据</title>
+</head>
+<body style="text-align:center;">
+
+<script type="text/javascript">
+function beforeSubmit(form){
+if(form.date.value==''){
+alert('日期不能为空！');
+form.username.focus();
+return false;
+}
+
+if(form.money.value== 0){
+alert('开销不能为0！');
+form.password.focus();
+return false;
+}
+
+return true;
+}
+</script>
+
+<fieldset>
+    <h2><legend>新增开销</legend></h2>
+    <form method="post" name="form" action="/insert" onSubmit="return beforeSubmit(this);">
+     <table border="0" width="100%" cellspacing="20" cellpadding="0">
+      <tr><td><label>日期：<input type="date"  name="date" value=2021-01-01></label></td></tr>
+         <tr><td><label>消费：<input type="number" name="money" value=0></label></td></tr>
+      <tr><td><input value="提交" type="submit"> </td></tr>
+     </table>
+    </form>
+
+<br><br>
+**message**
+    <a href="/menu">返回主页</a><br><br>
+     <a href="/login">返回登录</a><br><br>
+</fieldset>
+
+
+</body>
+</html>
+
+
