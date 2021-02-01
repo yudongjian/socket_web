@@ -48,9 +48,9 @@ alert('你两次输入的密码不一致，请重新输入！');
 form.new_password2.focus();
 return false;
 }
-if(form.old_password.value==form.new_password.value==form.new_password2.value) {
+if(form.old_password.value==form.new_password.value) {
 alert('新密码与原始密码一致，请重新输入！');
-form.new_password2.focus();
+form.new_password.focus();
 return false;
 }
 
