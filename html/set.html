@@ -6,20 +6,77 @@
 
 </head>
 <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆页面</title>
+</head>
+<body style="text-align:center;">
 
-<p align="center">用户: {username}</p>
-<h2>修改密码</h2>
+<script type="text/javascript">
+function beforeSubmit(form){
+if(form.old_password.value==''){
+alert('原密码不能为空！');
+form.old_password.focus();
+return false;
+}
+if(form.new_password.value==''){
+alert('新密码不能为空！');
+form.new_password.focus();
+return false;
+}
+if(form.new_password.value.length<4){
+alert('新密码至少为4位，请重新输入！');
+form.new_password.focus();
+return false;
+}
 
-<form action="/set" method="post">
-<br><br>
-  <input type="hidden" name="username" value="{username}"><br>
-旧密码       ： <input type="password" name="old_password"><br>
-新密码       ： <input type="password" name="first_new_password"><br>
-重新输入新密码 ： <input type="password" name="second_new_password"><br>
-<input type="submit" value="提交"><br><br>
+if(form.new_password.value==''){
+alert('新密码不能为空！');
+form.new_password2.focus();
+return false;
+}
+if(form.new_password2.value.length<4){
+alert('新密码至少为4位，请重新输入！');
+form.new_password2.focus();
+return false;
+}
 
-{message}
+if(form.new_password.value!=form.new_password2.value) {
+alert('你两次输入的密码不一致，请重新输入！');
+form.new_password2.focus();
+return false;
+}
+if(form.old_password.value==form.new_password.value==form.new_password2.value) {
+alert('新密码与原始密码一致，请重新输入！');
+form.new_password2.focus();
+return false;
+}
+
+return true;
+}
+
+
+</script>
+
+<fieldset>
+   <h2><legend>修改密码</legend></h2>
+    <p align="center">用户: **username**</p>
+    <form method="post" name="form" action="/set" onSubmit="return beforeSubmit(this);">
+     <table border="0" width="100%" cellspacing="20" cellpadding="0">
+      <tr><td><label>原密码：<input type="password" name="old_password" value=""></label></td></tr>
+      <tr><td><label>密   码：<input type="password" name="new_password" value=""></label></td></tr>
+      <tr><td><label>重复密码：<input type="password" name="new_password2" value=""></label></td></tr><br>
+      <tr><td><input value="提交修改" type="submit"> <input type="reset" value="重置"></td></tr>
+     </table>
+    </form>
+    **message**
+    <br><br>
     <a href="/menu">返回主页</a><br><br>
      <a href="/login">返回登录</a><br><br>
+
+</fieldset>
+
 </body>
 </html>
