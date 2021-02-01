@@ -10,13 +10,14 @@ sql_config = {
 #  html网页路径
 base_path = './html/'
 
-login_path =  base_path +'login.html'
-register_path =  base_path +'register.html'
-set_path =  base_path +'set.html'
-menu_path =  base_path +'menu.html'
-
+login_path = base_path + 'login.html'
+register_path = base_path + 'register.html'
+set_path = base_path + 'set.html'
+up_menu_path = base_path + 'menu_uppart.html'
+low_menu_path = base_path + 'menu_lowpart.html'
+insert_path = base_path + 'insert.html'
 # 下载文件路径
-down_path=  './down/download.txt'
+down_path = './down/download.txt'
 
 
 # IP 端口
