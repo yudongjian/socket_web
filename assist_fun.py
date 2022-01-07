@@ -6,6 +6,7 @@ from urllib import parse
 
 # set cookie
 def set_cookie(socket, cookie_value):
+    print("Hello !")
     socket.send(bytes("HTTP/1.1 201 OK\r\n", "utf-8"))
     socket.send(bytes('Set-Cookie: sessionid={}\r\n\r\n'.format(cookie_value), 'utf-8'))
 
