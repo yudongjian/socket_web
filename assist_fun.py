@@ -15,6 +15,7 @@ def set_cookie(socket, cookie_value):
 # analysis url, get username and password
 def get_url_info(url, column1, column2):
     url = url.split('\r\n')[-1]
+    print('hello!')
     params = parse.parse_qs(url)
     return params.get(column1)[0], params.get(column2)[0]
 
