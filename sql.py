@@ -1,8 +1,7 @@
 import pymysql
 import config
-
-
 config = config.sql_config
+
 
 def operational_data(fun, sql):
         db = pymysql.connect(**config)

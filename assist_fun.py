@@ -126,6 +126,7 @@ def post_register(url_info, new_socket):
                 born_username, born_password))
             format_html.render_html(new_socket, config.login_path, '', '用户注册成功,请登录...')
 
+
 # get given date data
 def get_menu_date(url_info, new_socket):
     print('查询指定日期的数据....')
